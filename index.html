@@ -5,13 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Dashboard</title>
-    <!-- Stylesheet, will add Bootstrap later. -->
+    <!-- My Stylesheets. I plan to add a google font later-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-    <!-- This will be my nav bar -->
+    <!--My nav bar. -->
     <header class="navbar justify-content-left mb-5 bg-info">
         <div>
             <h1 class="p-3"> Weather Dashboard</h1>
@@ -22,8 +22,10 @@
             <div class="col-lg-4 bg-light">
                 <h2 class="mb-3">Search for a City</h2>
                 <div class="input-group mb-3">
+                     <!-- search input that determines what city is being looked up. -->
                     <input type="text" id="city-input" class="form-control" placeholder="City Name" aria-label="City name" aria-describedby="basic-addon2">
                     <div class="input-group-append">
+                         <!-- button has an icon using a class and linking bootsrap icons. -->
                         <button id="search-button" class="btn-style btn btn-outline-secondary" type="button"><i class="icon-style bi bi-cloud-plus"></i></button>
                     </div>
                 </div>
