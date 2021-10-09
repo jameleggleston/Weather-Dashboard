@@ -138,3 +138,8 @@ function makeCityList (input) {
     });
 
 }
+
+// Function to clear all previous city seaches on click
+    clearBtn.addEventListener("click", function () {
+        cityNamesList.innerHTML = '';  
+    })
