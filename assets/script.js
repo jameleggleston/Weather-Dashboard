@@ -143,3 +143,74 @@ function makeCityList (input) {
     clearBtn.addEventListener("click", function () {
         cityNamesList.innerHTML = '';  
     })
+
+ // This function makes api call once a previously searched city is clicked again
+ function cityPrevSearch (val) {
+    var cityChoice = val;
+
+    makeCityList(val.innerHTML);
+
+
+
+var cityWeatherURL  = "https://api.openweathermap.org/data/2.5/weather?q=" + cityChoice + "&limit=1&appid=bcf6554b28b8c3bcc30e90eb27275f00";
+fetch(cityWeatherURL)
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function(data) {
+        console.log(data);
+        console.log(data.coord);
+
+        var longtitudeCoord = data.coord.lon;
+        var latitudeCoord = data.coord.lat;
+        var currentWeatherUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latitudeCoord + "&lon=" + longtitudeCoord + "&units=imperial&appid=bcf6554b28b8c3bcc30e90eb27275f00";
+        fetch(currentWeatherUrl)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(currenti) {
+            console.log(currenti);
+            var date = moment.unix(currenti.current.dt).format("MM/DD/YYYY");
+            var city = data.name;
+            var icon = currenti.current.weather[0].icon;
+            currentWeather.textContent = `${city}: (${date})`;
+            weatherIcon.setAttribute("src", "https://openweathermap.org/img/wn/" + icon + "@2x.png");
+            weatherIcon.setAttribute("alt", currenti.current.weather[0].description);
+            var temp = currenti.current.temp;
+            currentTemp.textContent = `Temperature: ${temp} \u00B0F`;
+            var humidity = currenti.current.humidity;
+            currenthumidity.textContent ="Humidity: " +  humidity + "%";
+            var windSpeed = currenti.current.wind_speed;
+            currentWindSpeed.textContent = "Wind Speed: " + windSpeed + " Mph";
+            uv = currenti.current.uvi;
+            if ( uv >= 0 && uv <= 2.99) {
+                currentUV.classList.add("low");
+                currentUV.classList.remove("moderate");
+                currentUV.classList.remove("high");
+                currentUV.classList.remove("very-high");
+
+            } else if (uv >= 3 && uv <= 5.99) {
+                currentUV.classList.remove("low");
+                currentUV.classList.remove("high");
+                currentUV.classList.remove("very-high");
+                currentUV.classList.add("moderate");
+            } else if (uv >= 6 && uv <= 7.99) {
+                currentUV.classList.remove("low");
+                currentUV.classList.remove("moderate");
+                currentUV.classList.remove("very-high");
+                currentUV.classList.add("high");
+            } else {
+                currentUV.classList.remove("low");
+                currentUV.classList.remove("moderate");
+                currentUV.classList.remove("high");
+                currentUV.classList.add("very-high");
+            }
+        
+            currentUV.textContent = uv;
+
+            fiveDayForecast(currenti);
+            saveSearch(); // this will throw an error in console. 
+
+        })
+    })
+}
