@@ -80,7 +80,7 @@ searchButton.addEventListener("click", function(){
                 currentUV.textContent = uv;
 
                 fiveDayForecast(currenti);
-                saveSearch(); //need to create this function next, throwing error in console. 
+                saveSearch();  
 
             })
         })
@@ -209,8 +209,101 @@ fetch(cityWeatherURL)
             currentUV.textContent = uv;
 
             fiveDayForecast(currenti);
-            saveSearch(); // this will throw an error in console. 
+            saveSearch(); 
 
         })
     })
 }
+
+// This function will save content in current weather div and weekly weather divs
+function saveSearch () {
+    var savedCurrentWeather = currentWeather.textContent;
+    var savedCurrentTemp = currentTemp.textContent;
+    var savedCurrentIcon = weatherIcon.getAttribute("src");
+    var savedCurrentHumidity = currenthumidity.textContent;
+    var savedCurrentWind = currentWindSpeed.textContent;
+    var savedCurrentUvi = currentUV.textContent;
+    localStorage.setItem("currentWeather",savedCurrentWeather);
+    localStorage.setItem("currentIcon",savedCurrentIcon);
+    localStorage.setItem("currentTemp",savedCurrentTemp);
+    localStorage.setItem("currentHumidity",savedCurrentHumidity);
+    localStorage.setItem("currentWind",savedCurrentWind);
+    localStorage.setItem("currentUvi",savedCurrentUvi);
+
+    // arrays used to store data from weekly weather blocks
+    var savedWeeklyWeather = document.querySelectorAll(".weekly-weather");
+    var dateArray = [];
+    var iconArray = [];
+    var tempArray = [];
+    var windArray = [];
+    var humidityArray = [];
+    // iterates through blocks and pushes data into defined arrays
+    for(var i = 0; i < savedWeeklyWeather.length; i++) {
+        dateArray.push(weeklyDate[i].textContent);
+        iconArray.push(weeklyIcon[i].getAttribute("src"));
+        tempArray.push(weeklyTemp[i].textContent);
+        windArray.push(weeklyWind[i].textContent);
+        humidityArray.push(weeklyHumidity[i].textContent);
+    }
+    // arrays stringified in order to be able to save to local storage
+    localStorage.setItem("dateArray", JSON.stringify(dateArray));
+    localStorage.setItem("iconArray", JSON.stringify(iconArray));
+    localStorage.setItem("tempArray", JSON.stringify(tempArray));
+    localStorage.setItem("windArray", JSON.stringify(windArray));
+    localStorage.setItem("humidityArray", JSON.stringify(humidityArray));
+
+    
+}
+
+// This function will display last saved content on load
+function showLastSearch () {
+    currentWeather.textContent = localStorage.getItem("currentWeather");
+    weatherIcon.setAttribute("src",localStorage.getItem("currentIcon"));
+    currentTemp.textContent = localStorage.getItem("currentTemp");
+    currenthumidity.textContent = localStorage.getItem("currentHumidity");
+    currentWindSpeed.textContent = localStorage.getItem("currentWind");
+    currentUV.textContent = localStorage.getItem("currentUvi");
+    var uv = currentUV.textContent;
+    // conditional used again for uvi background color depending on uvi number
+    if ( uv >= 0 && uv <= 2.99) {
+        currentUV.classList.add("low");
+        currentUV.classList.remove("moderate");
+        currentUV.classList.remove("high");
+        currentUV.classList.remove("very-high");
+
+    } else if (uv >= 3 && uv <= 5.99) {
+        currentUV.classList.remove("low");
+        currentUV.classList.remove("high");
+        currentUV.classList.remove("very-high");
+        currentUV.classList.add("moderate");
+    } else if (uv >= 6 && uv <= 7.99) {
+        currentUV.classList.remove("low");
+        currentUV.classList.remove("moderate");
+        currentUV.classList.remove("very-high");
+        currentUV.classList.add("high");
+    } else {
+        currentUV.classList.remove("low");
+        currentUV.classList.remove("moderate");
+        currentUV.classList.remove("high");
+        currentUV.classList.add("very-high");
+    }
+// strings containing data parsed in order to revert them back to arrays
+    var dateArray = JSON.parse(localStorage.getItem("dateArray"));
+    var iconArray = JSON.parse(localStorage.getItem("iconArray"));
+    var tempArray = JSON.parse(localStorage.getItem("tempArray"));   
+    var windArray = JSON.parse(localStorage.getItem("windArray"));
+    var humidityArray = JSON.parse(localStorage.getItem("humidityArray"));  
+    //  arrays are iterated through to display data
+    for(var i = 0; i < weeklyWeatherBlocks.length; i++) {
+        weeklyDate[i].textContent = dateArray[i];
+        weeklyIcon[i].setAttribute("src",iconArray[i]);
+        weeklyTemp[i].textContent = tempArray[i];
+        weeklyWind[i].textContent = windArray[i];
+        weeklyHumidity[i].textContent = humidityArray[i];
+    }
+    
+    
+
+}
+// calls function to display last saved search
+showLastSearch();
