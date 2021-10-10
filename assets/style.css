@@ -2,3 +2,50 @@
 *{
     font-family: "Patrick Hand";
 }
+/* styling for button color */
+.btn-style {
+    background-color: rgb(75, 207, 207);
+}
+
+/* icons edges are black so it becomes more visible  */
+.icon-style {
+    color: black;
+}
+
+/* style for a low uvi number */
+.low {
+    background-color: green;
+    color: white;
+}
+
+/* styling for a moderate uvi number */
+.moderate {
+    background-color: yellow;
+}
+
+/* styling for a high uvi number */
+.high {
+    background-color: orange;
+}
+
+/* styling for a very high uvi number */
+.very-high {
+    background-color: red;
+}
+
+/* uv background color has rounded edges */
+#current-uv {
+    border-radius: 3px;
+}
+
+/* cities that have already been searched have a background color set */
+.city-list-style {
+    background-color: rgb(75, 219, 228);
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+footer{
+    padding-left: 700px;
+    padding-top: 50px;
+}
